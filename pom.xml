@@ -28,9 +28,16 @@
             <artifactId>spring-boot-starter</artifactId>
         </dependency>
 
+        <!-- junit单元测试依赖-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
+            <version>2.6.0</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
             <scope>test</scope>
         </dependency>
 
@@ -52,11 +59,18 @@
             <artifactId>swagger-spring-boot-starter</artifactId>
             <version>1.9.1.RELEASE</version>
         </dependency>
+
+        <!-- aop依赖-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
+        </dependency>
+
     </dependencies>
 
     <build>
         <!-- package打包后war的名字 -->
-        <finalName>SpringSecurityTest</finalName>
+        <finalName>Spring-boot-aop-test</finalName>
 
         <plugins>
 
@@ -66,11 +80,10 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
                     <!--指定java打包成jar包时 -jar 主函数执行入口，启动类 -->
-                    <mainClass>com.springsecuritytest.SpringSecurityTestApplication</mainClass>
+                    <mainClass>com.demo.DemoApplication</mainClass>
 
                 </configuration>
             </plugin>
-
 
 
         </plugins>
