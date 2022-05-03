@@ -1,4 +1,4 @@
-package com.springsecuritytest.controller;
+package com.demo.controller;
 
 
 import org.springframework.web.bind.annotation.RequestMapping;
