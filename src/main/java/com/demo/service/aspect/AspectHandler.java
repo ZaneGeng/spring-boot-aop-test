@@ -65,13 +65,16 @@ public class AspectHandler {
     @AfterReturning(value = "txPoint()", returning = "result")
     public void afterReturning(JoinPoint jPoint, Object result) {
 
-        // 获取目标方法返回值
-        Integer response = (Integer) result;
-        response += 4000;
-
         System.out.println();
         System.out.println("==========BEGIN 后置通知【提交事务】==========");
-        System.out.println(jPoint.getSignature().getName() + "业务方法修改后内容：" + response + ",原始result值：" + result);
+
+        // 获取目标方法返回值
+        if (result != null) {
+            Integer response = (Integer) result;
+            response += 4000;
+            System.out.println(jPoint.getSignature().getName() + "业务方法修改后内容：" + response + ",原始result值：" + result);
+        }
+
         System.out.println("==========END 后置通知【翻译数据字典功能也在此执行】==========");
         System.out.println();
 
@@ -80,7 +83,7 @@ public class AspectHandler {
 
     /**
      * 环绕通知
-     *
+     * <p>
      * 注意：不要和 @Before、@AfterReturning一起使用！
      * 特点：
      * 1、在目标方法前后都能增强
@@ -101,49 +104,58 @@ public class AspectHandler {
 
         // 获取目标方法的参数值
         Object args[] = pjp.getArgs();
-        System.out.println("环绕通知：目标方法的参数值:" + args[0]);
+        if (args.length > 0) {
+            System.out.println("环绕通知：目标方法的参数值:" + args[0]);
+        }
 
         // 执行目标方法，可以修改这个返回值
         Object methodResult = pjp.proceed();
-        Integer response = (Integer) methodResult;
-        response += 4000;
+        if (methodResult != null) {
+            Integer response = (Integer) methodResult;
+            response += 4000;
 
-        long end = System.currentTimeMillis();
-        System.out.println("返回值原值=" + methodResult + "，环绕通知修改后的返回值：" + response);
-        System.out.println("目标方法耗时" + (end - start) + "ms");
+            long end = System.currentTimeMillis();
+            System.out.println("返回值原值=" + methodResult + "，环绕通知修改后的返回值：" + response);
+            System.out.println("目标方法耗时" + (end - start) + "ms");
 
-        // 返回结果
-        System.out.println("###################END 环绕通知###################");
-        return response;
+            // 返回结果
+            System.out.println("###################END 环绕通知###################");
+            return response;
+        }
+
+
+        return pjp;
+
     }
 
 
     /**
      * 异常通知
-     *
+     * <p>
      * 特点：
      * 1、目标方法无异常不执行，有异常才执行
      * 2、不能对异常进行处理，这里只能是记录日常，并做一些报警功能
      * 3、报错了话，就不会执行环绕通知pjp.proceed()之后的内容了
-     *
+     * <p>
      * 插入点：
-          try {
-            before(),afterReturning()，aroud()
-          }catch (Exception e){
-              afterThrowing(e)  增强插入到这里
-          }finally{
-              after()
-          }
+     * try {
+     * before(),afterReturning()，aroud()
+     * }catch (Exception e){
+     * afterThrowing(e)  增强插入到这里
+     * }finally{
+     * after()
+     * }
+     *
      * @param e
      */
-    @AfterThrowing(value = "txPoint()",throwing = "e")
+    @AfterThrowing(value = "txPoint()", throwing = "e")
     public void afterThrowing(Exception e) {
 
         System.out.println();
         System.out.println("###################BEGIN 异常通知###################");
 
         // todo 通知管理员，这里只能捕获异常，但是不能处理异常
-        System.out.println("异常内容是：可以发信息给管理员："+e.getMessage());
+        System.out.println("异常内容是：可以发信息给管理员：" + e.getMessage());
 
         System.out.println("###################END 异常通知###################");
         System.out.println();
@@ -152,20 +164,20 @@ public class AspectHandler {
 
     /**
      * 最终通知
-     *
+     * <p>
      * 特点：
      * 1、在目标方法后执行
      * 2、总会被执行，无论目标方法是否抛异常
      * 3、用来收尾工作：例如清除临时数据，变量等
-     *
+     * <p>
      * 插入点：
-         try {
-            before(),afterReturning()，aroud()
-         }catch (Exception e){
-            afterThrowing(e)  增强插入到这里
-         }finally{
-            after()
-         }
+     * try {
+     * before(),afterReturning()，aroud()
+     * }catch (Exception e){
+     * afterThrowing(e)  增强插入到这里
+     * }finally{
+     * after()
+     * }
      */
     @After(value = "txPoint()")
     public void after() {
