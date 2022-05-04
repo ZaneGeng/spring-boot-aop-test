@@ -6,7 +6,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * 自定义注解
+ * 自定义注解：类+方法上使用
  */
 //表示次注解可以标注在类和方法上
 @Target({ElementType.METHOD, ElementType.TYPE})

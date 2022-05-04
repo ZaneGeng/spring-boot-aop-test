@@ -15,7 +15,7 @@ public class AopTransactionController {
 
 
     @RequestMapping("transaction")
-    @ZaneTransactionAnnotation
+    @ZaneTransactionAnnotation("随便写")
     public int index() {
 
         System.out.println("Begin 目标方法index业务代码");
