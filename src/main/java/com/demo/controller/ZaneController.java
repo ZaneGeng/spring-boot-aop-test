@@ -5,10 +5,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * @Description:
- * @Author: gz
- * @Date: 2022/5/3 20:32
- * @Version: 1.0
+ * 测试自定义注解控制器
+ * ps:注释掉AspectHandler，不然影响aop效果
  */
 @RestController
 @ZaneAnnotation(value = "我是耿正的自定义注解") // 对应：@Pointcut(value = "@within(com.demo.annotation.ZaneAnnotation)")
